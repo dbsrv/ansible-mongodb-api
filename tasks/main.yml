@@ -1,0 +1,9 @@
+---
+
+- name: Install Automation Agent
+  include: mms-agent.yml
+  when: mongodb_mms_api_key != ""
+
+- name: Configure thru Ops Manager API
+  include: opsmgr-api.yml
+  when: mongodb_mms_api_key != ""
