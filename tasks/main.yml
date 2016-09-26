@@ -8,4 +8,4 @@
 - name: Configure thru Ops Manager API
   include: opsmgr-api.yml
   when: ( mongodb_opsmgr_api_key != ""
-        and inventory_hostname == hostvars[groups['mongo_master'][0]]['ansible_hostname'] )
+        and inventory_hostname == mongodb_master_node )
