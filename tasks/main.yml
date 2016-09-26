@@ -2,9 +2,10 @@
 
 - name: Install Automation Agent
   include: mms-agent.yml
-  when: mongodb_mms_api_key != ""
+  when: ( mongodb_install_mms_agent == true
+        and mongodb_mms_api_key != "" )
 
 - name: Configure thru Ops Manager API
   include: opsmgr-api.yml
-  when: ( mongodb_mms_api_key != ""
+  when: ( mongodb_opsmgr_api_key != ""
         and inventory_hostname == hostvars[groups['mongo_master'][0]]['ansible_hostname'] )
