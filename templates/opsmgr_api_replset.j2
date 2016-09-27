@@ -1,6 +1,7 @@
 {
    "options": {
-        "downloadBase": "/var/lib/mongodb-mms-automation"
+        "downloadBase": "/var/lib/mongodb-mms-automation",
+        "downloadBaseWindows": "C:\\MMSAutomation\\versions"
     },
     "mongoDbVersions": [
         {"name": "{{ mongodb_version }}"}
@@ -22,7 +23,7 @@
                     "path": "{{ mongodb_systemlog_path }}"
                 }
             },
-            "hostname": "{{ hostvars[groups['mongo_master'][0]]['ansible_eth0']['ipv4']['address'] }}",
+            "hostname": "{{ groups['mongo'][0] }}",
             "name": "apitest0",
             "processType": "mongod",
             "version": "{{ mongodb_version }}",
@@ -44,7 +45,7 @@
                     "path": "{{ mongodb_systemlog_path }}"
                 }
             },
-            "hostname": "{{ hostvars[groups['mongo_replicas'][0]]['ansible_eth0']['ipv4']['address'] }}",
+            "hostname": "{{ groups['mongo'][1] }}",
             "name": "apitest1",
             "processType": "mongod",
             "version": "{{ mongodb_version }}",
@@ -66,7 +67,7 @@
                     "path": "{{ mongodb_systemlog_path }}"
                 }
             },
-            "hostname": "{{ hostvars[groups['mongo_replicas'][1]]['ansible_eth0']['ipv4']['address'] }}",
+            "hostname": "{{ groups['mongo'][2] }}",
             "name": "apitest2",
             "processType": "mongod",
             "version": "{{ mongodb_version }}",
@@ -87,7 +88,7 @@
                 },
                 {
                     "_id": 2,
-                    "host": "apitest2",
+                    "host": "apitest2"
                 }
             ]
         }

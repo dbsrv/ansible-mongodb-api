@@ -1,7 +1,7 @@
 ---
 
 - name: Create automation configuration
-  template: src=/templates/opsmgr_api_replset.js dest=/tmp/opsmgr_api_replset mode=0644
+  template: src=opsmgr_api_replset.j2 dest={{ mongodb_storage_dbpath }}/opsmgr_api_replset mode=0644
 
 - name: Send configuration to Ops Manager
-  shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" -H "Content-Type:application/json" "http://{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -i -X PUT --data @{{ mongodb_storage_dbpath }}/opsmgr_api_replset
+  shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" -H "Content-Type:application/json" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -i -X PUT --data @{{ mongodb_storage_dbpath }}/opsmgr_api_replset
