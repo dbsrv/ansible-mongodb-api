@@ -4,11 +4,11 @@
   file: path={{ mongodb_storage_dbpath }} state=directory owner={{ mongodb_user }} recurse=yes
 
 - name: Install MMS agent pt. 1
-  get_url: url={{ mongodb_mms_agent_pkg }} dest={{ mongodb_storage_dbpath }}/mms-agent.deb
+  get_url: url={{ mongodb_mms_agent_pkg }} dest={{ mongodb_storage_dbpath }}/mms-agent.rpm
   register: mongodb_mms_agent_loaded
 
 - name: Install MMS agent pt. 2
-  apt: deb={{ mongodb_storage_dbpath }}/mms-agent.deb
+  yum: name={{ mongodb_storage_dbpath }}/mms-agent.rpm state=present
   when: mongodb_mms_agent_loaded.changed
 
 - name: Configure the MMS agent pt. 1
@@ -20,3 +20,4 @@
 
 - name: Ensure that the MMS agent is started
   service: name=mongodb-mms-automation-agent state=started enabled=yes
+
