@@ -1,0 +1,66 @@
+{
+    "args2_6": {
+        "net": {
+            "port": "{{ mongodb_net_port }}"
+        },
+        "replication": {
+            "replSetName": "{{ mongodb_replication_replset }}"
+        },
+        "storage": {
+            "dbPath": "{{ mongodb_storage_dbpath }}"
+        },
+        "systemLog": {
+            "destination": "file",
+            "path": "{{ mongodb_systemlog_path }}"
+        }
+    },
+    "hostname": "{{ groups['mongo'][0] }}",
+    "name": "{{ mongodb_replication_replset }}0",
+    "processType": "mongod",
+    "version": "{{ mongodb_version }}",
+    "authSchemaVersion": 5
+},
+{
+    "args2_6": {
+        "net": {
+            "port": "{{ mongodb_net_port }}"
+        },
+        "replication": {
+            "replSetName": "{{ mongodb_replication_replset }}"
+        },
+        "storage": {
+            "dbPath": "{{ mongodb_storage_dbpath }}"
+        },
+        "systemLog": {
+            "destination": "file",
+            "path": "{{ mongodb_systemlog_path }}"
+        }
+    },
+    "hostname": "{{ groups['mongo'][1] }}",
+    "name": "{{ mongodb_replication_replset }}1",
+    "processType": "mongod",
+    "version": "{{ mongodb_version }}",
+    "authSchemaVersion": 5
+},
+{
+    "args2_6": {
+        "net": {
+            "port": "{{ mongodb_net_port }}"
+        },
+        "replication": {
+            "replSetName": "{{ mongodb_replication_replset }}"
+        },
+        "storage": {
+            "dbPath": "{{ mongodb_storage_dbpath }}"
+        },
+        "systemLog": {
+            "destination": "file",
+            "path": "{{ mongodb_systemlog_path }}"
+        }
+    },
+    "hostname": "{{ groups['mongo'][2] }}",
+    "name": "{{ mongodb_replication_replset }}2",
+    "processType": "mongod",
+    "version": "{{ mongodb_version }}",
+    "authSchemaVersion": 5
+}
