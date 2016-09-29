@@ -7,7 +7,7 @@
   yum: name=jq state=present
 
 - name: Update automation configuration
-  shell: cat {{ mongodb_storage_dbpath }}//automationConfig | jq '.processes |= .+ [{{ item | to_json }}]' > {{ mongodb_storage_dbpath }}//automationConfig
+  shell: cat {{ mongodb_storage_dbpath }}/automationConfig | jq '.processes |= .+ [{{ item | to_json }}]' | tee {{ mongodb_storage_dbpath }}/automationConfig
   with_template: 
     - opsmgr_api_processes.j2
     - opsmgr_api_replicaSets.j2
