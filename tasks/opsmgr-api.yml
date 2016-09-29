@@ -6,11 +6,13 @@
 - name: Install jq (json parser) package
   yum: name=jq state=present
 
-- name: Update automation configuration
+- name: Update automation configuration (processes)
   shell: cat {{ mongodb_storage_dbpath }}/automationConfig | jq '.processes |= .+ [{{ item | to_json }}]' | tee {{ mongodb_storage_dbpath }}/automationConfig
-  with_template: 
-    - opsmgr_api_processes.j2
-    - opsmgr_api_replicaSets.j2
+  with_template: opsmgr_api_processes.j2
+
+- name: Update automation configuration (replicaSets)
+  shell: cat {{ mongodb_storage_dbpath }}/automationConfig | jq '.replicaSets |= .+ [{{ item | to_json }}]' | tee {{ mongodb_storage_dbpath }}/automationConfig
+  with_template: opsmgr_api_replicaSets.j2
 
 - name: Send configuration to Ops Manager
   shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" -H "Content-Type:application/json" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -i -X PUT --data @{{ mongodb_storage_dbpath }}/automationConfig
