@@ -3,6 +3,9 @@
 - name: Retrieve automation configuration
   shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -o {{ mongodb_storage_dbpath }}//automationConfig
 
+- name: Install jq (json parser) package
+  yum: name=jq state=present
+
 - name: Update automation configuration
   shell: cat {{ mongodb_storage_dbpath }}//automationConfig | jq '.processes |= .+ [{{ item | to_json }}]' > {{ mongodb_storage_dbpath }}//automationConfig
   with_template: 
