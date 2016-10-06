@@ -1,20 +1,28 @@
 ---
 
+- name: Check for existing automation configuration file
+  stat: path=/etc/automationConfig
+  register: config_file
+  
+- name: Back up automation configuration file if exists
+  command: mv /etc/automationConfig /etc/automationConfig-`date +%F_%R`
+  when: config_file.stat.exists
+
 - name: Retrieve automation configuration
-  shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -o {{ mongodb_storage_dbpath }}//automationConfig
+  shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -o /etc/automationConfig
 
 - name: Install jq (json parser) package
   yum: name=jq state=present
 
 - name: Update automation configuration (processes)
-  shell: cat {{ mongodb_storage_dbpath }}/automationConfig | jq '.processes |= .+ {{ item | to_json }}' | tee {{ mongodb_storage_dbpath }}/automationConfig
+  shell: cat /etc/automationConfig | jq '.processes |= .+ {{ item | to_json }}' | tee /etc/automationConfig
   with_template: opsmgr_api_processes.j2
 
 - name: Update automation configuration (replicaSets)
-  shell: cat {{ mongodb_storage_dbpath }}/automationConfig | jq '.replicaSets |= .+ [{{ item | to_json }}]' | tee {{ mongodb_storage_dbpath }}/automationConfig
+  shell: cat /etc/automationConfig | jq '.replicaSets |= .+ [{{ item | to_json }}]' | tee /etc/automationConfig
   with_template: opsmgr_api_replicaSets.j2
 
 - name: Send configuration to Ops Manager
-  shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" -H "Content-Type:application/json" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -i -X PUT --data @{{ mongodb_storage_dbpath }}/automationConfig
+  shell: curl -u "{{ mongodb_opsmgr_api_user }}:{{ mongodb_opsmgr_api_key }}" -H "Content-Type:application/json" "{{ mongodb_mms_base_url }}/api/public/v1.0/groups/{{ mongodb_mms_group_id }}/automationConfig" --digest -i -X PUT --data @/etc/automationConfig
   register: api_response
   failed_when: "'HTTP/1.1 200 OK' not in api_response.stdout"
