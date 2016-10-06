@@ -5,7 +5,7 @@
   register: config_file
   
 - name: Back up automation configuration file if exists
-  command: mv /etc/automationConfig /etc/automationConfig-`date +%F_%R`
+  shell: mv /etc/automationConfig /etc/automationConfig-`date +%F_%R`
   when: config_file.stat.exists
 
 - name: Retrieve automation configuration
