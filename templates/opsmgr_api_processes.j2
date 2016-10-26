@@ -14,7 +14,7 @@
             "path": "{{ mongodb_systemlog_path }}"
         }
     },
-    "hostname": "{{ groups['mongo'][0] }}",
+    "hostname": "{{ groups['{{ cluster_name }}_master'][0] }}",
     "name": "{{ mongodb_replication_replset }}0",
     "processType": "mongod",
     "version": "{{ mongodb_version }}",
@@ -36,7 +36,7 @@
             "path": "{{ mongodb_systemlog_path }}"
         }
     },
-    "hostname": "{{ groups['mongo'][1] }}",
+    "hostname": "{{ groups['{{ cluster_name }}_replicas'][0] }}",
     "name": "{{ mongodb_replication_replset }}1",
     "processType": "mongod",
     "version": "{{ mongodb_version }}",
@@ -58,7 +58,7 @@
             "path": "{{ mongodb_systemlog_path }}"
         }
     },
-    "hostname": "{{ groups['mongo'][2] }}",
+    "hostname": "{{ groups['{{ cluster_name }}_replicas'][1] }}",
     "name": "{{ mongodb_replication_replset }}2",
     "processType": "mongod",
     "version": "{{ mongodb_version }}",
