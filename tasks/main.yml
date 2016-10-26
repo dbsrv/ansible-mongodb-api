@@ -1,7 +1,7 @@
 ---
 
 - name: Install Automation Agent
-  include: mms-agent.yml
+  include: install-agent.yml
   when: ( mongodb_install_mms_agent == true
         and mongodb_mms_api_key != "" )
 
